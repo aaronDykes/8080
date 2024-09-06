@@ -4,14 +4,11 @@
 
 static op_meta args(op_meta *m, unsigned char **src)
 {
-#define OPCODE(src) ((opcode_t)(*src))
 
 	for (int i = 0; i < m->argc; i++)
-		*(m->argv + i) = OPCODE((*src) + i + 1);
+		*(m->argv + i) = *((*src) + i + 1);
 
 	return *m;
-
-#undef OPCODE
 }
 
 static op_meta meta(opcode_t op, unsigned char **src)
@@ -71,9 +68,9 @@ static op_meta meta(opcode_t op, unsigned char **src)
 		m.name = "DCR_C";
 		m.argc = 0;
 		break;
-	case MVI_C_D8: /* 0x0e, size: 1 */
+	case MVI_C_D8: /* 0x0e, size: 2 */
 		m.name = "MVI_C_D8";
-		m.argc = 0;
+		m.argc = 1;
 		break;
 
 	case RRC: /* 0x0f, size: 1 */
@@ -100,9 +97,9 @@ static op_meta meta(opcode_t op, unsigned char **src)
 		m.name = "DCR_D";
 		m.argc = 0;
 		break;
-	case MVI_D_D8: /* 0x16, size: 1 */
+	case MVI_D_D8: /* 0x16, size: 2 */
 		m.name = "MVI_D_D8";
-		m.argc = 0;
+		m.argc = 1;
 		break;
 	case RAL: /* 0x23, size: 1 */
 		m.name = "RAL";
@@ -944,9 +941,9 @@ static op_meta meta(opcode_t op, unsigned char **src)
 		m.name = "POP_PSW";
 		m.argc = 0;
 		break;
-	case JP_ADR: /* 0x242, size: 0 */
+	case JP_ADR: /* 0x242, size: 3 */
 		m.name = "JP";
-		m.argc = 0;
+		m.argc = 2;
 		break;
 	case DI: /* 0x243, size: 1 */
 		m.name = "DI";

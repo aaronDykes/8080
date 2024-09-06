@@ -9,7 +9,9 @@ typedef enum
 	B,
 	C,
 	D,
-	E
+	E,
+	H,
+	L
 
 } register_t;
 

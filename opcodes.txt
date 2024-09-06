@@ -211,7 +211,7 @@
 0xdb	IN_D8	            2		                  special
 0xdc	CC_ADR	      3		                  if CY, CALL ADR
 0xde	SBI_D8	      2	Z, S, P, CY, AC	      A <- A - data - CY
-0xdf	RST 3	1		CALL $18
+0xdf	RST_3	            1		                  CALL $18
 0xe0	RPO	            1		                  if PO, RET
 0xe1	POP_H	            1		                  L <- (sp); H <- (sp+1); sp <- sp+2
 0xe2	JPO_ADR	      3		                  if PO, PC <- ADR

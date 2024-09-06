@@ -13,9 +13,9 @@ typedef struct op_meta op_meta;
 
 struct op_meta
 {
-	char    *name;
-	uint8_t  argc;
-	opcode_t argv[MAX_OP_ARGC];
+	char   *name;
+	uint8_t argc;
+	uint8_t argv[MAX_OP_ARGC];
 };
 
 struct token

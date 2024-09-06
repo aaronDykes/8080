@@ -215,7 +215,7 @@ typedef enum
 	IN_D8      = 0xdb, /* size: 2 */
 	CC_ADR     = 0xdc, /* size: 3 */
 	SBI_D8     = 0xde, /* size: 2 */
-	RST_3      = 0xdf, /* size: 3 */
+	RST_3      = 0xdf, /* size: 1 */
 	RPO        = 0xe0, /* size: 1 */
 	POP_H      = 0xe1, /* size: 1 */
 	JPO_ADR    = 0xe2, /* size: 3 */

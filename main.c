@@ -36,18 +36,24 @@ static void run_file(const char *path)
 
 	token t;
 
+	int adr = 0;
 	for (size_t i = 0; i < buff.len; i++)
 	{
 
 		unsigned char *b = (buff.buffer + i);
 		t                = make_token(&b);
 		i += t.meta.argc;
-		// buff.buffer += t.meta.argc;
-		printf("opcode: 0x%x\n", *b);
+
+		if (i % 16 == 0 && i != 0)
+			adr = i;
 		printf(
-		    "op_code: 0x%x, instruction: %s, argc: %d\n", t.op, t.meta.name,
-		    t.meta.argc
+		    "%06x\t\top_code: 0x%x, instruction: %s, argc: %d\n", adr, t.op,
+		    t.meta.name, t.meta.argc
 		);
+		for (int j = 0; j < t.meta.argc; j++)
+			printf(
+			    "%06x\t\targ%d: 0x%x\n", adr, j + 1, *(t.meta.argv + j)
+			);
 	}
 }
 
