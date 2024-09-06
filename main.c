@@ -36,12 +36,11 @@ static void run_file(const char *path)
 	int adr = 0;
 
 #ifndef HEX_DUMP_8080
-	for (size_t i = 0; i < buff.len; i++)
+	for (int i = 0; i < buff.len; i++)
 	{
 
 		unsigned char *b = (buff.buffer + i);
 		t                = make_token(&b);
-		i += t.meta.argc;
 
 		adr = i - (i % 16);
 		printf(
@@ -52,6 +51,7 @@ static void run_file(const char *path)
 			printf(
 			    "%06x\t\targ%d: 0x%x\n", adr, j + 1, *(t.meta.argv + j)
 			);
+		i += t.meta.argc;
 	}
 #else
 
@@ -74,6 +74,7 @@ static void run_file(const char *path)
 			unsigned char *b = (buff.buffer + i + j);
 			t                = make_token(&b);
 			printf("%02x ", t.op);
+			argc = 0;
 
 			int k;
 
@@ -83,7 +84,6 @@ static void run_file(const char *path)
 			for (; k < t.meta.argc; k++)
 				argv[argc++] = *(t.meta.argv + k);
 		}
-		argc = 0;
 		printf("\n");
 	}
 END:

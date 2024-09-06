@@ -5,8 +5,9 @@
 static op_meta args(op_meta *m, unsigned char **src)
 {
 
-	for (int i = 0; i < m->argc; i++)
-		*(m->argv + i) = *((*src) + i + 1);
+	int count = 1;
+	for (int i = m->argc - 1; i >= 0; i--)
+		*(m->argv + i) = *((*src) + count++);
 
 	return *m;
 }
