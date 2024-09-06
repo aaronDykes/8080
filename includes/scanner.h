@@ -26,8 +26,7 @@ struct token
 
 typedef struct token   token;
 typedef struct scanner scanner;
-static scanner         scan;
 
-token number(char **src);
+token make_token(unsigned char **src);
 
 #endif

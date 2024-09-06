@@ -8,13 +8,13 @@ SRC		:= $(wildcard ./*.c)
 OBJ		:= $(SRC:%.c=%.o)
 YKES	:= ./
 
-all: ykes
+all: bin
 
-ykes:	$(OBJ)
+bin:	$(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) -lm
 
 %.o:	$(YKES)%.c
 	$(CC) -I$(YKES)includes -c $< $(CFLAGS)
 
 clean:
-	rm -rf *.dSYM *.o *.d ykes
+	rm -rf *.dSYM *.o *.d bin

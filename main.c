@@ -8,8 +8,8 @@ typedef struct bfile bfile;
 
 struct bfile
 {
-	char  *buffer;
-	size_t len;
+	unsigned char *buffer;
+	size_t         len;
 };
 
 static void  run_file(const char *path);
@@ -36,13 +36,18 @@ static void run_file(const char *path)
 
 	token t;
 
-	for (size_t i = 0; i < buff.len; i += 2)
+	for (size_t i = 0; i < buff.len; i++)
 	{
-		t       = number(&buff.buffer);
-		int inc = t.meta.argc * 2;
 
-		i += inc;
-		buff.buffer += inc;
+		unsigned char *b = (buff.buffer + i);
+		t                = make_token(&b);
+		i += t.meta.argc;
+		// buff.buffer += t.meta.argc;
+		printf("opcode: 0x%x\n", *b);
+		printf(
+		    "op_code: 0x%x, instruction: %s, argc: %d\n", t.op, t.meta.name,
+		    t.meta.argc
+		);
 	}
 }
 
@@ -120,7 +125,8 @@ static bfile read_file(char *path)
 	size_t fileSize = ftell(file);
 	rewind(file);
 
-	char *buffer = ALLOC(fileSize + 1);
+	unsigned char *buffer = NULL;
+	buffer                = ALLOC(fileSize + 1);
 
 	if (!buffer)
 	{
@@ -130,6 +136,7 @@ static bfile read_file(char *path)
 	size_t bytesRead  = fread(buffer, sizeof(char), fileSize, file);
 	buffer[bytesRead] = '\0';
 
+	b.buffer = NULL;
 	b.buffer = buffer;
 	b.len    = bytesRead;
 	fclose(file);
