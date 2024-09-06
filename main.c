@@ -21,10 +21,7 @@ int main(int argc, char **argv)
 	if (argc == 2)
 		run_file(argv[1]);
 	else
-	{
-		fprintf(stderr, "USAGE: ykes [path]\n");
-		exit(69);
-	}
+		return 1;
 
 	return 0;
 }
@@ -37,6 +34,8 @@ static void run_file(const char *path)
 	token t;
 
 	int adr = 0;
+
+#ifndef HEX_DUMP_8080
 	for (size_t i = 0; i < buff.len; i++)
 	{
 
@@ -44,8 +43,7 @@ static void run_file(const char *path)
 		t                = make_token(&b);
 		i += t.meta.argc;
 
-		if (i % 16 == 0 && i != 0)
-			adr = i;
+		adr = i - (i % 16);
 		printf(
 		    "%06x\t\top_code: 0x%x, instruction: %s, argc: %d\n", adr, t.op,
 		    t.meta.name, t.meta.argc
@@ -55,6 +53,42 @@ static void run_file(const char *path)
 			    "%06x\t\targ%d: 0x%x\n", adr, j + 1, *(t.meta.argv + j)
 			);
 	}
+#else
+
+	uint8_t argc              = 0;
+	uint8_t argv[MAX_OP_ARGC] = {0};
+
+	for (size_t i = 0; i < buff.len; i += 16)
+	{
+		adr = i - (i % 16);
+		printf("%06x\t\t", adr);
+
+		for (int j = 0; j < argc; j++)
+			printf("%02x ", argv[j]);
+
+		for (int j = argc; j < 16; j++)
+		{
+			if (i + j > buff.len)
+				goto END;
+
+			unsigned char *b = (buff.buffer + i + j);
+			t                = make_token(&b);
+			printf("%02x ", t.op);
+
+			int k;
+
+			for (k = 0; k < t.meta.argc && (++j < 16); k++)
+				printf("%02x ", *(t.meta.argv + k));
+
+			for (; k < t.meta.argc; k++)
+				argv[argc++] = *(t.meta.argv + k);
+		}
+		argc = 0;
+		printf("\n");
+	}
+END:
+
+#endif
 }
 
 static int str_len(char *str)
